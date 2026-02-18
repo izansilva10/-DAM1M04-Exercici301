@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.warning {
+    background-color: #ffe0e0;
+    padding: 10px;
+    border: 1px solid red;
+}
+
+.badge {
+    padding: 3px 8px;
+    background-color: #0077cc;
+    color: white;
+    border-radius: 4px;
+    margin-left: 10px;
+}

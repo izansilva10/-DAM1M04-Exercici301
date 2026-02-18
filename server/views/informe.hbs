@@ -1,0 +1,38 @@
+{{> header}}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Informe</title>
+    <link rel="stylesheet" href="/estils.css">
+</head>
+<body>
+
+<h1>{{title}}</h1>
+<h2>{{subtitle}}</h2>
+
+<ul>
+{{#each cities}}
+    <li>
+        <strong>{{name}}</strong> -
+        {{lookup ../countries country}} -
+        Población: {{population}}
+
+        {{#if coastal}}
+            🌊 Costanera
+        {{else}}
+            Interior
+        {{/if}}
+
+        {{#if (lte population 800000)}}
+            <span class="badge">Pequeña</span>
+        {{else}}
+            <span class="badge">Grande</span>
+        {{/if}}
+    </li>
+{{/each}}
+</ul>
+
+</body>
+</html>
