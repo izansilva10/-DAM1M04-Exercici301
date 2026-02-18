@@ -1,37 +1,71 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const hbs = require('hbs');
 
-// Continguts estàtics (carpeta public)
-app.use(express.static('public'))
-app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
-  next();
+const app = express();
+const port = 3000;
+
+// =============================
+// CONFIGURACIÓN BÁSICA
+// =============================
+
+// Carpeta pública (CSS)
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Motor de plantillas
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Registrar partials
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
+
+// =============================
+// HELPER lte (menor o igual)
+// =============================
+hbs.registerHelper('lte', function (a, b) {
+    return a <= b;
 });
 
-// Configurar direcció ‘/’ 
-/*
-app.get('/', async (req, res) => {
-    res.send(`Hello World /`)
-})
-*/
+// =============================
+// RUTA PRINCIPAL (/)
+// =============================
+app.get('/', (req, res) => {
+    const siteData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, 'data/site.json'), 'utf8')
+    );
 
-// Activar el servidor
-const httpServer = app.listen(port, appListen)
-function appListen () {
-    console.log(`Example app listening on: http://0.0.0.0:${port}`)
-}
+    res.render('index', siteData);
+});
 
-// Aturar el servidor correctament 
-process.on('SIGTERM', shutDown);
-process.on('SIGINT', shutDown);
-function shutDown() {
-    // Executar aquí el codi previ al tancament de servidor
-    
-    console.log('Received kill signal, shutting down gracefully');
-    httpServer.close()
-    process.exit(0);
-}
+// =============================
+// RUTA INFORME (/informe)
+// =============================
+app.get('/informe', (req, res) => {
+
+    const siteData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, 'data/site.json'), 'utf8')
+    );
+
+    const citiesData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, 'data/cities.json'), 'utf8')
+    );
+
+    const countriesData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, 'data/countries.json'), 'utf8')
+    );
+
+    res.render('informe', {
+        title: siteData.title,
+        subtitle: siteData.subtitle,
+        cities: citiesData.cities,
+        countries: countriesData.countries
+    });
+});
+
+// =============================
+// ARRANCAR SERVIDOR
+// =============================
+app.listen(port, () => {
+    console.log(`Servidor en http://localhost:${port}`);
+});

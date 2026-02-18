@@ -17,6 +17,16 @@
   "license": "ISC",
   "dependencies": {
     "express": "^5.2.1",
+    "hbs": "^4.2.0",
     "pm2": "^6.0.14"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/izansilva10/-DAM1M04-Exercici301.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/izansilva10/-DAM1M04-Exercici301/issues"
+  },
+  "homepage": "https://github.com/izansilva10/-DAM1M04-Exercici301#readme"
 }
